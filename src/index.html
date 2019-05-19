@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #frequencies {
+        display: flex;
+        flex-direction: row;
+        height: 300px;
+        align-items: flex-end;
+      }
+      #frequencies > .bucket {
+        display: block;
+        margin-right: 1px;
+        background: grey;
+        width: 10px;
+        height: 255px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="frequencies"></div>
+    <script type="text/javascript">
+
+// Avoid throttling of test window by playing silence
+const context = new AudioContext()
+source = context.createBufferSource()
+source.connect(context.destination)
+source.start(0)
+
+const DMX = require('dmx');
+
+async function main() {
+  const dmx = new DMX();
+  const lightsUniverse = dmx.addUniverse('demo_lights', 'enttec-usb-dmx-pro', '/dev/tty.usbserial-EN257964');
+
+  const audioCtx = new AudioContext();
+  const analyser = audioCtx.createAnalyser();
+  const audioStream = await navigator.mediaDevices.getUserMedia({audio: true, video: false});
+  source = audioCtx.createMediaStreamSource(audioStream);
+  source.connect(analyser);
+
+  analyser.fftSize = 256;
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+
+  const containerEl = document.getElementById('frequencies');
+  const frequencyElements = [];
+  for (let i=0; i<dataArray.length; i++) {
+    const element = document.createElement('span');
+    element.classList.add('bucket');
+    frequencyElements.push(element);
+    containerEl.appendChild(element);
+  }
+
+  function setFrequency(element, value) {
+    element.style.height = value + 'px';
+  }
+
+  function tick() {
+    analyser.getByteFrequencyData(dataArray);
+    const lightsUpdate = {};
+    for (let i=0; i<dataArray.length; i++) {
+      setFrequency(frequencyElements[i], dataArray[i]);
+
+      lightsUpdate[i*3+1] = dataArray[i] / 4;
+      lightsUpdate[i*3+2] = dataArray[i] / 4 + (dataArray[i] > 127 ? dataArray[i] / 2 : 0);
+      lightsUpdate[i*3+3] = dataArray[i] / 4;
+    }
+    lightsUniverse.update(lightsUpdate, { skipIfBusy: true });
+  };
+
+  const interval = setInterval(tick, 1000 / 30);
+}
+
+main();
+
+    </script>
+  </body>
+</html>
