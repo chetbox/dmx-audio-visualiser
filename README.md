@@ -1,6 +1,6 @@
 ## What it does
 
-This app listens for audio on your microphone, performs a FFT and displays each frequency bucket as the brightness on a LED.
+This app listens for audio on your microphone, performs a FFT and displays each frequency bucket as the brightness on a number of LEDs.
 
 ## Hardware
 
