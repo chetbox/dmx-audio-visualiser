@@ -760,7 +760,7 @@ detect-libc@^1.0.3:
 
 "dmx@github:chetbox/dmx#realtime-animations-with-serialport-7":
   version "0.2.2"
-  resolved "https://codeload.github.com/chetbox/dmx/tar.gz/e8d32649ce3583da8a6fd2ef3d7a5b54b01242a8"
+  resolved "https://codeload.github.com/chetbox/dmx/tar.gz/cdd951b0515ed382e8f7f523588912bfc41ae9bc"
   dependencies:
     serialport "^7.1.5"
 
