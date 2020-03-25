@@ -42,7 +42,7 @@
     }
   },
   "dependencies": {
-    "dmx": "github:chetbox/dmx#realtime-animations-with-serialport-7",
+    "dmx": "^0.2.4",
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
