@@ -31,7 +31,10 @@ const DMX = require('dmx');
 
 async function main() {
   const dmx = new DMX();
-  const lightsUniverse = dmx.addUniverse('demo_lights', 'enttec-usb-dmx-pro', '/dev/tty.usbserial-EN257964');
+  const lightsUniverse = dmx.addUniverse('demo_lights', 'artnet', '192.168.5.152', {
+    port: 6454,
+    universe: 0
+  });
 
   const audioCtx = new AudioContext();
   const analyser = audioCtx.createAnalyser();
