@@ -31,11 +31,12 @@ const DMX = require('dmx');
 
 async function main() {
   const dmx = new DMX();
-  const lightsUniverse = dmx.addUniverse('demo_lights', 'enttec-usb-dmx-pro', '/dev/tty.usbserial-EN257964');
+  // const lightsUniverse = dmx.addUniverse('demo_lights', 'enttec-usb-dmx-pro', '/dev/tty.usbserial-EN257964');
 
   const audioCtx = new AudioContext();
   const analyser = audioCtx.createAnalyser();
   const audioStream = await navigator.mediaDevices.getUserMedia({audio: true, video: false});
+  console.log(audioStream)
   source = audioCtx.createMediaStreamSource(audioStream);
   source.connect(analyser);
 
@@ -66,7 +67,7 @@ async function main() {
       lightsUpdate[i*3+2] = dataArray[i] / 4 + (dataArray[i] > 127 ? dataArray[i] / 2 : 0);
       lightsUpdate[i*3+3] = dataArray[i] / 4;
     }
-    lightsUniverse.update(lightsUpdate, { skipIfBusy: true });
+    // lightsUniverse.update(lightsUpdate, { skipIfBusy: true });
   };
 
   const interval = setInterval(tick, 1000 / 30);

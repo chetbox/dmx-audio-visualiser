@@ -1,5 +1,9 @@
 const { app, BrowserWindow } = require('electron');
 
+// Required for serialport
+// See https://github.com/serialport/node-serialport/issues/2051
+app.allowRendererProcessReuse = false;
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
@@ -15,6 +19,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
+      contextIsolation: false,
       nodeIntegration: true,
       backgroundThrottling: false,
     },
